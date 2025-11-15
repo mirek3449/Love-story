@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Для моєї коханої</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #000;
+      color: #f9fafb;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    .wrapper { min-height: 100vh; }
+
+    section {
+      min-height: 100vh;
+      padding: 24px 16px 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ФОНИ ДЛЯ КОЖНОГО ЕКРАНУ — ЗАМІНИ НА СВОЇ КОЛАЖІ */
+    #hero    { background-image: url("bg/hero.jpg"); }
+    #video   { background-image: url("bg/video.jpg"); }
+    #gallery { background-image: url("bg/gallery.jpg"); }
+    #moments { background-image: url("bg/moments.jpg"); }
+    #love    { background-image: url("bg/love.jpg"); }
+
+    @media (min-width: 768px) {
+      section { padding: 40px 24px 96px; }
+    }
+
+    .content {
+      width: 100%;
+      max-width: 900px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #ffe1f0;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1, h2 { font-weight: 800; margin-bottom: 6px; }
+    h1 { font-size: 28px; letter-spacing: 0.03em; }
+    h2 { font-size: 22px; }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 32px; }
+      h2 { font-size: 26px; }
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    @media (min-width: 768px) {
+      p { font-size: 16px; }
+    }
+
+    .heart { font-size: 22px; margin-left: 4px; }
+
+    .counter-main {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 10px 0 4px;
+    }
+
+    .counter-sub {
+      font-size: 15px;
+      color: #e5e7eb;
+      margin-bottom: 14px;
+    }
+
+    .tagline { font-style: italic; color: #f3f4f6; margin-top: 2px; }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.55);
+      backdrop-filter: blur(8px);
+      color: #ffe4f1;
+      border: 1px solid rgba(253, 164, 175, 0.6);
+    }
+
+    .btn-next {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #ec4899, #f97316);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.55);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      position: relative;
+      z-index: 5;
+    }
+
+    .btn-next span { font-size: 16px; }
+
+    .btn-next:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(236,72,153,0.7);
+    }
+
+    .btn-next:active { transform: translateY(1px) scale(0.98); }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    /* ВІДЕО (без рамок) */
+    .video-block { margin-top: 18px; }
+
+    .video-block video {
+      width: 100%;
+      display: block;
+      max-height: 70vh;
+      border: none;
+      outline: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    /* =========================
+       ГАЛЕРЕЯ-СТІКЕРИ (ФОТО)
+       ========================= */
+
+    .gallery-intro { margin-top: 6px; }
+
+    .gallery-scatter {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* базово — мобілка/планшет: 2 колонки, без жорсткого перекриття */
+    .sticker {
+      position: relative;
+      width: calc(50% - 6px);
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 22px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
+      background: #111;
+      opacity: 1;
+      transform: rotate(var(--rot, 0deg)) translateY(var(--shift, 0px));
+      pointer-events: none;
+    }
+
+    .sticker.s1  { --rot: -4deg; --shift: 0px;   }
+    .sticker.s2  { --rot: 3deg;  --shift: 4px;   }
+    .sticker.s3  { --rot: -2deg; --shift: -6px;  }
+    .sticker.s4  { --rot: 4deg;  --shift: 6px;   }
+    .sticker.s5  { --rot: -3deg; --shift: -4px;  }
+    .sticker.s6  { --rot: 5deg;  --shift: 2px;   }
+    .sticker.s7  { --rot: -4deg; --shift: -8px;  }
+    .sticker.s8  { --rot: 2deg;  --shift: 5px;   }
+    .sticker.s9  { --rot: -3deg; --shift: -3px;  }
+    .sticker.s10 { --rot: 4deg;  --shift: 7px;   }
+
+    /* дуже вузькі екрани — 1 колонка */
+    @media (max-width: 360px) {
+      .sticker {
+        width: 100%;
+      }
+    }
+
+    /* десктоп — 3 колонки, трохи хаотичніше */
+    @media (min-width: 900px) {
+      .gallery-scatter {
+        gap: 16px;
+      }
+
+      .sticker {
+        width: calc(33.333% - 11px);
+      }
+
+      .sticker.s1  { --rot: -6deg; --shift: 0px;   }
+      .sticker.s2  { --rot: 4deg;  --shift: 10px;  }
+      .sticker.s3  { --rot: -3deg; --shift: -12px; }
+      .sticker.s4  { --rot: 5deg;  --shift: 8px;   }
+      .sticker.s5  { --rot: -4deg; --shift: -6px;  }
+      .sticker.s6  { --rot: 6deg;  --shift: 4px;   }
+      .sticker.s7  { --rot: -5deg; --shift: -10px; }
+      .sticker.s8  { --rot: 3deg;  --shift: 6px;   }
+      .sticker.s9  { --rot: -4deg; --shift: -8px;  }
+      .sticker.s10 { --rot: 5deg;  --shift: 12px;  }
+    }
+
+    /* =========================
+       СПОГАДИ — КАРУСЕЛЬ
+       ========================= */
+
+    .moments-carousel {
+      margin-top: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .moments-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .memory-card {
+      flex: 0 0 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .memory-inner {
+      width: 100%;
+      max-width: 520px;
+      padding: 4px 4px 10px;
+    }
+
+    .memory-photo-wrap {
+      width: 100%;
+      margin-bottom: 8px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+    }
+
+    .memory-photo {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .memory-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .memory-text {
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .moments-controls {
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .moments-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.8);
+      color: #f9fafb;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .moments-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .moments-counter {
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    @media (min-width: 768px) {
+      .memory-inner {
+        max-width: 480px;
+      }
+    }
+
+    /* ЗА ЩО ЛЮБЛЮ */
+    .love-points {
+      margin-top: 10px;
+      display: grid;
+      gap: 7px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .love-points li {
+      font-size: 15px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .love-points li::before {
+      content: "♥";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 11px;
+      color: #fb7185;
+      transform: translateY(3px);
+    }
+
+    .final-note {
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      section { opacity: 1 !important; transform: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- ЕКРАН 1: HERO + ЛІЧИЛЬНИК -->
+    <section id="hero">
+      <div class="content">
+        <div class="subtitle">НАША ІСТОРІЯ</div>
+        <h1>Стільки часу я щасливий з тобою <span class="heart">❤️</span></h1>
+        <div id="counterDays" class="counter-main">...</div>
+        <div id="counterDetail" class="counter-sub">...</div>
+        <p>Кожен день з тобою – це маленьке диво, яке я нереально ціную.</p>
+        <p class="tagline">Я хочу, щоб ти завжди памʼятала: ти – моє найулюбленіше “випадково”.</p>
+        <div class="chips">
+          <div class="chip">Наші смішні фотки</div>
+          <div class="chip">Нічні розмови</div>
+          <div class="chip">Обійми, від яких спокійно</div>
+        </div>
+        <button class="btn-next" onclick="scrollToSection('video')">
+          Далі до відео <span>↓</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ЕКРАН 2: ВІДЕО -->
+    <section id="video">
+      <div class="content">
+        <div class="subtitle">МІЙ МАЛЕНЬКИЙ ЕДІТ</div>
+        <h2>Відео про нас</h2>
+        <p>Тут я зібрав кілька моментів, які для мене дуже дорогі. Воно має саме включатися, коли ти доскролиш сюди 💫</p>
+        <div class="video-block">
+          <!-- СВОЄ ВІДЕО У ПАПКУ media І ЗАМІНИ ШЛЯХ -->
+          <video id="ourVideo" autoplay muted playsinline loop controls>
+            <source src="media/our-edit.mp4" type="video/mp4">
+            Ваш браузер не підтримує відео.
+          </video>
+        </div>
+        <button class="btn-next" onclick="scrollToSection('gallery')">
+          А тепер фото-стікери 📸
+        </button>
+      </div>
+    </section>
+
+    <!-- ЕКРАН 3: ФОТО-СТІКЕРИ -->
+    <section id="gallery">
+      <div class="content">
+        <div class="subtitle">МИЛІ МОМЕНТИ</div>
+        <h2>Як ніби я просто накидав наші фото на стіл</h2>
+        <p class="gallery-intro">
+          Це не всі фото, але кожне з них — момент, коли я дивився на тебе й думав:
+          “як взагалі мені так пощастило?”.
+        </p>
+
+        <div class="gallery-scatter">
+          <!-- ТУТ СТАВИШ СВОЇ ФОТО (.jpg або .jpeg) -->
+          <img class="sticker s10" src="images/1.jpeg" alt="Ми разом 1">
+          <img class="sticker s10" src="images/2.jpeg" alt="Ми разом 2">
+          <img class="sticker s10" src="images/3.jpeg" alt="Ми разом 3">
+          <img class="sticker s10" src="images/4.jpeg" alt="Ми разом 4">
+          <img class="sticker s10" src="images/5.jpeg" alt="Ми разом 5">
+          <img class="sticker s10" src="images/6.jpeg" alt="Ми разом 6">
+          <img class="sticker s10" src="images/7.jpeg" alt="Ми разом 7">
+          <img class="sticker s10" src="images/8.jpeg" alt="Ми разом 8">
+          <img class="sticker s10" src="images/9.jpeg" alt="Ми разом 9">
+          <img class="sticker s10" src="images/10.jpeg" alt="Ми разом 10">
+        </div>
+
+        <button class="btn-next" onclick="scrollToSection('moments')">
+          Трохи історій 💫
+        </button>
+      </div>
+    </section>
+
+    <!-- ЕКРАН 4: СПОГАДИ — КАРУСЕЛЬ -->
+    <section id="moments">
+      <div class="content">
+        <div class="subtitle">НАШІ СПОГАДИ</div>
+        <h2>Моменти, які я ніколи не забуду</h2>
+
+        <div class="moments-carousel">
+          <div class="moments-track">
+            <!-- Слайд 1 -->
+            <div class="memory-card">
+              <div class="memory-inner">
+                <div class="memory-photo-wrap">
+                  <img class="memory-photo" src="memories/m1.jpeg" alt="Спогад 1">
+                </div>
+                <div class="memory-title">Перший день, коли ми офіційно “ми”</div>
+                <div class="memory-text">
+                  Напиши тут своїми словами: що ти відчував, як це було, які дрібниці памʼятаєш.
+                </div>
+              </div>
+            </div>
+
+            <!-- Слайд 2 -->
+            <div class="memory-card">
+              <div class="memory-inner">
+                <div class="memory-photo-wrap">
+                  <img class="memory-photo" src="memories/m2.jpeg" alt="Спогад 2">
+                </div>
+                <div class="memory-title">Та наша смішна/крипова історія</div>
+                <div class="memory-text">
+                  Ще одна історія, де ви ржали, десь зганяли, щось накоєніли – все, що ваше.
+                </div>
+              </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="memory-card">
+              <div class="memory-inner">
+                <div class="memory-photo-wrap">
+                  <img class="memory-photo" src="memories/m3.jpeg" alt="Спогад 3">
+                </div>
+                <div class="memory-title">Момент, коли ти зрозумів, що дуже її цінуєш</div>
+                <div class="memory-text">
+                  Опиши момент, коли до тебе дійшло, що вона – не просто “дівчина”, а людина,
+                  без якої ти не уявляєш свій день.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="moments-controls">
+            <button class="moments-btn prev" type="button">←</button>
+            <div class="moments-counter">1 / 3</div>
+            <button class="moments-btn next" type="button">→</button>
+          </div>
+        </div>
+
+        <button class="btn-next" onclick="scrollToSection('love')">
+          І найголовніше ♥
+        </button>
+      </div>
+    </section>
+
+    <!-- ЕКРАН 5: ЗІЗНАННЯ -->
+    <section id="love">
+      <div class="content">
+        <div class="subtitle">ЩИРО ВІД МЕНЕ</div>
+        <h2>За що я тебе ціную і люблю</h2>
+        <ul class="love-points">
+          <li>За те, як ти вмієш підтримати, навіть коли я мовчу.</li>
+          <li>За твої дурацькі жарти, від яких я роблю вигляд, що мені “не смішно”, але усміхаюсь.</li>
+          <li>За твої очі, в яких завжди хочеться тонути ще трохи.</li>
+          <li>За терпіння до мене, навіть коли я туплю, нервую чи злюсь.</li>
+          <li>За те, що ти робиш мій світ набагато теплішим і спокійнішим.</li>
+        </ul>
+        <p class="final-note">
+          Я дуже тебе люблю. Дякую за кожен день, який ми вже прожили разом –
+          і за всі, які ще попереду. 💗
+        </p>
+        <div class="footer-note">
+          (якщо захочеш — перегорни вгору й подивись усе ще раз)
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ===== 1) ДАТА ВІДНОСИН — ЗАМІНИ НА ВАШУ =====
+    const startDate = new Date("2023-11-10T00:00:00"); // <-- ТУТ ТВОЯ ДАТА
+
+    function plural(n, forms) {
+      const n10 = n % 10;
+      const n100 = n % 100;
+      if (n10 === 1 && n100 !== 11) return forms[0];
+      if (n10 >= 2 && n10 <= 4 && !(n100 >= 12 && n100 <= 14)) return forms[1];
+      return forms[2];
+    }
+
+    function diffYMD(start, end) {
+      let y = end.getFullYear() - start.getFullYear();
+      let m = end.getMonth() - start.getMonth();
+      let d = end.getDate() - start.getDate();
+
+      if (d < 0) {
+        m -= 1;
+        const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+        d += prevMonth.getDate();
+      }
+      if (m < 0) {
+        y -= 1;
+        m += 12;
+      }
+      if (m === 12) { y += 1; m = 0; }
+      return { years: y, months: m, days: d };
+    }
+
+    function updateCounter() {
+      const now = new Date();
+      const diffMs = now - startDate;
+      const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const ymd = diffYMD(startDate, now);
+
+      const daysText = totalDays + " " + plural(totalDays, ["день разом", "дні разом", "днів разом"]);
+      const parts = [];
+
+      if (ymd.years > 0) parts.push(ymd.years + " " + plural(ymd.years, ["рік", "роки", "років"]));
+      if (ymd.months > 0) parts.push(ymd.months + " " + plural(ymd.months, ["місяць", "місяці", "місяців"]));
+      parts.push(ymd.days + " " + plural(ymd.days, ["день", "дні", "днів"]));
+
+      document.getElementById("counterDays").textContent = daysText;
+      document.getElementById("counterDetail").textContent = parts.join(", ");
+    }
+
+    // ===== 2) СКРОЛ ДО СЕКЦІЇ =====
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // ===== 3) АНІМАЦІЯ СЕКЦІЙ ПРИ СКРОЛІ =====
+    const sections = document.querySelectorAll("section");
+    const sectionObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.25 }
+    );
+    sections.forEach(sec => sectionObserver.observe(sec));
+
+    // ===== 4) АВТОПЛЕЙ ВІДЕО, КОЛИ ЕКРАН З ВІДЕО В ПОЛІ ЗОРУ =====
+    const videoSection = document.getElementById("video");
+    const videoEl = document.getElementById("ourVideo");
+
+    if (videoSection && videoEl) {
+      const videoObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              videoEl.play().catch(() => {});
+            } else {
+              videoEl.pause();
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      videoObserver.observe(videoSection);
+    }
+
+    // ===== 5) КАРУСЕЛЬ СПОГАДІВ =====
+    (function () {
+      const track = document.querySelector(".moments-track");
+      const slides = track ? Array.from(track.querySelectorAll(".memory-card")) : [];
+      const prevBtn = document.querySelector(".moments-btn.prev");
+      const nextBtn = document.querySelector(".moments-btn.next");
+      const counterEl = document.querySelector(".moments-counter");
+
+      if (!track || !slides.length || !prevBtn || !nextBtn) return;
+
+      let index = 0;
+
+      function updateCarousel() {
+        track.style.transform = `translateX(-${index * 100}%)`;
+        if (counterEl) {
+          counterEl.textContent = `${index + 1} / ${slides.length}`;
+        }
+      }
+
+      function showNext() {
+        index = (index + 1) % slides.length; // по колу
+        updateCarousel();
+      }
+
+      function showPrev() {
+        index = (index - 1 + slides.length) % slides.length;
+        updateCarousel();
+      }
+
+      prevBtn.addEventListener("click", showPrev);
+      nextBtn.addEventListener("click", showNext);
+
+      // свайп на мобілці
+      let startX = null;
+
+      track.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1) {
+          startX = e.touches[0].clientX;
+        }
+      });
+
+      track.addEventListener("touchend", (e) => {
+        if (startX === null) return;
+        const diffX = e.changedTouches[0].clientX - startX;
+        const threshold = 40;
+
+        if (Math.abs(diffX) > threshold) {
+          if (diffX < 0) showNext();
+          else showPrev();
+        }
+        startX = null;
+      });
+
+      updateCarousel();
+    })();
+
+    updateCounter();
+  </script>
+</body>
+</html>
