@@ -7,13 +7,14 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #000;
-      color: #f9fafb;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
+     body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          background: #000 url("bg/hero.jpeg") center center / cover fixed no-repeat;
+         color: #f9fafb;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+        }
+
 
     .wrapper { min-height: 100vh; }
 
@@ -39,11 +40,11 @@
     }
 
     /* ФОНИ ДЛЯ КОЖНОГО ЕКРАНУ — ЗАМІНИ НА СВОЇ КОЛАЖІ */
-    #hero    { background-image: url("bg/hero.jpeg"); }
+    /*#hero    { background-image: url("bg/hero.jpg"); }
     #video   { background-image: url("bg/video.jpg"); }
     #gallery { background-image: url("bg/gallery.jpg"); }
     #moments { background-image: url("bg/moments.jpg"); }
-    #love    { background-image: url("bg/love.jpg"); }
+    #love    { background-image: url("bg/love.jpg"); }*/
 
     @media (min-width: 768px) {
       section { padding: 40px 24px 96px; }
@@ -191,6 +192,13 @@
       transform: rotate(var(--rot, 0deg)) translateY(var(--shift, 0px));
       pointer-events: none;
     }
+    
+
+
+    .sticker:hover {
+  animation: wiggle 0.6s ease-in-out;
+    }
+
 
     .sticker.s1  { --rot: -4deg; --shift: 0px;   }
     .sticker.s2  { --rot: 3deg;  --shift: 4px;   }
@@ -219,6 +227,9 @@
       .sticker {
         width: calc(33.333% - 11px);
       }
+      .sticker:hover {
+        animation: wiggle 0.6s ease-in-out;
+      }
 
       .sticker.s1  { --rot: -6deg; --shift: 0px;   }
       .sticker.s2  { --rot: 4deg;  --shift: 10px;  }
@@ -231,6 +242,18 @@
       .sticker.s9  { --rot: -4deg; --shift: -8px;  }
       .sticker.s10 { --rot: 5deg;  --shift: 12px;  }
     }
+    @keyframes wiggle {
+
+     0%, 100% {
+      transform: rotate(var(--rot, 0deg)) translateY(var(--shift, 0px));
+      }
+     25% {
+       transform: rotate(calc(var(--rot, 0deg) + 2deg)) translateY(calc(var(--shift, 0px) - 2px));
+      }
+    75% {
+       transform: rotate(calc(var(--rot, 0deg) - 2deg)) translateY(calc(var(--shift, 0px) + 2px));
+      }
+} 
 
     /* =========================
        СПОГАДИ — КАРУСЕЛЬ
@@ -321,6 +344,7 @@
       .memory-inner {
         max-width: 480px;
       }
+      
     }
 
     /* ЗА ЩО ЛЮБЛЮ */
@@ -369,12 +393,12 @@
         <h1>Стільки часу я щасливий з тобою <span class="heart">❤️</span></h1>
         <div id="counterDays" class="counter-main">...</div>
         <div id="counterDetail" class="counter-sub">...</div>
-        <p>Кожен день з тобою – це маленьке диво, яке я нереально ціную.</p>
-        <p class="tagline">Я хочу, щоб ти завжди памʼятала: ти – моє найулюбленіше “випадково”.</p>
+        <p>Я неймовірно щасливий і радий за кожну секудну що ми разом</p>
+        <p class="tagline">Я хочу, щоб ти завжди памʼятала: ти найцінніше що у мене є</p>
         <div class="chips">
-          <div class="chip">Наші смішні фотки</div>
-          <div class="chip">Нічні розмови</div>
-          <div class="chip">Обійми, від яких спокійно</div>
+          <div class="chip">Наші сіллі моменти</div>
+          <div class="chip">Вайбові прогулянки</div>
+          <div class="chip">Обнімашки-цілувашки</div>
         </div>
         <button class="btn-next" onclick="scrollToSection('video')">
           Далі до відео <span>↓</span>
@@ -385,9 +409,9 @@
     <!-- ЕКРАН 2: ВІДЕО -->
     <section id="video">
       <div class="content">
-        <div class="subtitle">МІЙ МАЛЕНЬКИЙ ЕДІТ</div>
-        <h2>Відео про нас</h2>
-        <p>Тут я зібрав кілька моментів, які для мене дуже дорогі. Воно має саме включатися, коли ти доскролиш сюди 💫</p>
+        <div class="subtitle">💕Наші 2 рочки💕 </div>
+        <h2>Вітаю тебе кицюшечка</h2>
+        <p>Кожна мить з тобою найщасливіша в моєму житті 💫</p>
         <div class="video-block">
           <!-- СВОЄ ВІДЕО У ПАПКУ media І ЗАМІНИ ШЛЯХ -->
           <video id="ourVideo" autoplay muted playsinline loop controls>
@@ -396,7 +420,7 @@
           </video>
         </div>
         <button class="btn-next" onclick="scrollToSection('gallery')">
-          А тепер фото-стікери 📸
+          І фотічкі 📸
         </button>
       </div>
     </section>
@@ -404,15 +428,14 @@
     <!-- ЕКРАН 3: ФОТО-СТІКЕРИ -->
     <section id="gallery">
       <div class="content">
-        <div class="subtitle">МИЛІ МОМЕНТИ</div>
-        <h2>Як ніби я просто накидав наші фото на стіл</h2>
+        <div class="subtitle">Ми з тобою такі круті</div>
+        <h2>Тільки подивись на нас</h2>
         <p class="gallery-intro">
-          Це не всі фото, але кожне з них — момент, коли я дивився на тебе й думав:
-          “як взагалі мені так пощастило?”.
+          Мені так пощастило з тобою моя чарівненька Фінтіфлюшечка”.
         </p>
 
         <div class="gallery-scatter">
-          <!-- ТУТ СТАВИШ СВОЇ ФОТО (.jpg або .jpeg) -->
+          <!-- ТУТ СТАВИШ СВОЇ ФОТО (.jpg або .jpeg) -->    
           <img class="sticker s10" src="images/1.jpeg" alt="Ми разом 1">
           <img class="sticker s10" src="images/2.jpeg" alt="Ми разом 2">
           <img class="sticker s10" src="images/3.jpeg" alt="Ми разом 3">
@@ -426,7 +449,7 @@
         </div>
 
         <button class="btn-next" onclick="scrollToSection('moments')">
-          Трохи історій 💫
+          Наші чарівні моменти  💫
         </button>
       </div>
     </section>
@@ -445,9 +468,9 @@
                 <div class="memory-photo-wrap">
                   <img class="memory-photo" src="memories/m1.jpeg" alt="Спогад 1">
                 </div>
-                <div class="memory-title">Перший день, коли ми офіційно “ми”</div>
+                <div class="memory-title">Наша поїздка в татри</div>
                 <div class="memory-text">
-                  Напиши тут своїми словами: що ти відчував, як це було, які дрібниці памʼятаєш.
+                  Кайфово ходили жили і кохались з тобою
                 </div>
               </div>
             </div>
@@ -458,9 +481,9 @@
                 <div class="memory-photo-wrap">
                   <img class="memory-photo" src="memories/m2.jpeg" alt="Спогад 2">
                 </div>
-                <div class="memory-title">Та наша смішна/крипова історія</div>
+                <div class="memory-title">Поїздка у Відень</div>
                 <div class="memory-text">
-                  Ще одна історія, де ви ржали, десь зганяли, щось накоєніли – все, що ваше.
+                  Як ходили з бутєрбродами що зробили і пили радлер.
                 </div>
               </div>
             </div>
@@ -471,18 +494,73 @@
                 <div class="memory-photo-wrap">
                   <img class="memory-photo" src="memories/m3.jpeg" alt="Спогад 3">
                 </div>
-                <div class="memory-title">Момент, коли ти зрозумів, що дуже її цінуєш</div>
+                <div class="memory-title">Наш відпочинок на скалі</div>
                 <div class="memory-text">
-                  Опиши момент, коли до тебе дійшло, що вона – не просто “дівчина”, а людина,
-                  без якої ти не уявляєш свій день.
+                  Шикарний день коли нам було спокійно
                 </div>
               </div>
             </div>
+          
+
+           <!-- Слайд 4 -->
+           <div class="memory-card">
+              <div class="memory-inner">
+                <div class="memory-photo-wrap">
+                    <img class="memory-photo" src="memories/m4.jpeg" alt="Спогад 4">
+                  </div>
+                  <div class="memory-title">Наші прогулянки по римському тетру</div>
+                   <div class="memory-text">
+                  Кожен раз вертаючись туди з тобою почуваєтся ніби рай
+                   </div>
+               </div>
+              </div>
+            
+
+          <!-- Слайд 5 -->
+          <div class="memory-card">
+           <div class="memory-inner">
+              <div class="memory-photo-wrap">
+                <img class="memory-photo" src="memories/m5.jpeg" alt="Спогад 5">
+              </div>
+            <div class="memory-title">Поїздка на скали</div>
+            <div class="memory-text">
+              Шикарні лісні прогулянки і найтепліші поцілунки
+            </div>
           </div>
+        </div>
+    
+
+      <!-- Слайд 6 -->
+      <div class="memory-card">
+        <div class="memory-inner">
+          <div class="memory-photo-wrap">
+            <img class="memory-photo" src="memories/m6.jpeg" alt="Спогад 6">
+          </div>
+          <div class="memory-title">Перша річниця в Бразільєро</div>
+          <div class="memory-text">
+            Не тільки шикарна їжа і ресторан а й просто найприємніший день
+          </div>
+        </div>
+      </div>
+   
+
+    <!-- Слайд 7 -->
+    <div class="memory-card">
+      <div class="memory-inner">
+        <div class="memory-photo-wrap">
+          <img class="memory-photo" src="memories/m7.jpeg" alt="Спогад 7">
+        </div>
+        <div class="memory-title">Мої поїздки до тебе в Прешов</div>
+        <div class="memory-text">
+          Кожен раз з якимось приколами і траблами але разом з тобою навіть Прешов не страшний
+        </div>
+      </div>
+    </div>
+  </div>
 
           <div class="moments-controls">
             <button class="moments-btn prev" type="button">←</button>
-            <div class="moments-counter">1 / 3</div>
+            <div class="moments-counter">1 / 7</div>
             <button class="moments-btn next" type="button">→</button>
           </div>
         </div>
@@ -496,29 +574,29 @@
     <!-- ЕКРАН 5: ЗІЗНАННЯ -->
     <section id="love">
       <div class="content">
-        <div class="subtitle">ЩИРО ВІД МЕНЕ</div>
-        <h2>За що я тебе ціную і люблю</h2>
+        <div class="subtitle">❤️‍🔥💗💖💕</div>
+        <h2>Дякую тобі за всі минулі і майбутні дня з тобою. Я неймовірно сильно Кохаю тебе </h2>
         <ul class="love-points">
-          <li>За те, як ти вмієш підтримати, навіть коли я мовчу.</li>
-          <li>За твої дурацькі жарти, від яких я роблю вигляд, що мені “не смішно”, але усміхаюсь.</li>
-          <li>За твої очі, в яких завжди хочеться тонути ще трохи.</li>
-          <li>За терпіння до мене, навіть коли я туплю, нервую чи злюсь.</li>
-          <li>За те, що ти робиш мій світ набагато теплішим і спокійнішим.</li>
+          <li>За те, як ти турбуєшся про менее і робиш мене кращим💗</li>
+          <li>За твїй неперевершений розум і всі ці круті речі що ти мені розповідаєш💗</li>
+          <li>За твої найкрасивіші очі, в яких завжди хочеться тонути💗</li>
+          <li>За підтримку, коли я сумую, страждаю, нервую чи злюсь💗</li>
+          <li>За те, що ти робиш мій світ набагато теплішим і спокійнішим💗</li>
         </ul>
-        <p class="final-note">
-          Я дуже тебе люблю. Дякую за кожен день, який ми вже прожили разом –
-          і за всі, які ще попереду. 💗
-        </p>
         <div class="footer-note">
           (якщо захочеш — перегорни вгору й подивись усе ще раз)
         </div>
+        <button class="btn-next" onclick="scrollToSection('hero')">
+          Знову з початку ⬆️
+        </button>
+    
       </div>
     </section>
   </div>
 
   <script>
     // ===== 1) ДАТА ВІДНОСИН — ЗАМІНИ НА ВАШУ =====
-    const startDate = new Date("2023-11-10T00:00:00"); // <-- ТУТ ТВОЯ ДАТА
+    const startDate = new Date("2023-11-18T17:15:00"); // <-- ТУТ ТВОЯ ДАТА
 
     function plural(n, forms) {
       const n10 = n % 10;
@@ -547,21 +625,46 @@
     }
 
     function updateCounter() {
-      const now = new Date();
-      const diffMs = now - startDate;
-      const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const ymd = diffYMD(startDate, now);
+        const now = new Date();
+        const diffMs = now - startDate;
 
-      const daysText = totalDays + " " + plural(totalDays, ["день разом", "дні разом", "днів разом"]);
-      const parts = [];
+        // загальні секунди / дні
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const totalDays = Math.floor(totalSeconds / (60 * 60 * 24));
 
-      if (ymd.years > 0) parts.push(ymd.years + " " + plural(ymd.years, ["рік", "роки", "років"]));
-      if (ymd.months > 0) parts.push(ymd.months + " " + plural(ymd.months, ["місяць", "місяці", "місяців"]));
-      parts.push(ymd.days + " " + plural(ymd.days, ["день", "дні", "днів"]));
+        const ymd = diffYMD(startDate, now);
 
-      document.getElementById("counterDays").textContent = daysText;
-      document.getElementById("counterDetail").textContent = parts.join(", ");
-    }
+         // верхній рядок: "123 дні разом"
+          const daysText =
+         totalDays + " " + plural(totalDays, ["день разом", "дні разом", "днів разом"]);
+
+        // роки / місяці / дні
+         const detailParts = [];
+         if (ymd.years > 0) {
+           detailParts.push(ymd.years + " " + plural(ymd.years, ["рік", "роки", "років"]));
+         }
+        if (ymd.months > 0) {
+           detailParts.push(ymd.months + " " + plural(ymd.months, ["місяць", "місяці", "місяців"]));
+        }
+        detailParts.push(ymd.days + " " + plural(ymd.days, ["день", "дні", "днів"]));
+        const ymdText = detailParts.join(", ");
+
+        // години / хвилини / секунди поверх повних днів
+        const secondsInDay = 24 * 60 * 60;
+        const secondsToday = totalSeconds - totalDays * secondsInDay;
+        const hours = Math.floor(secondsToday / 3600);
+        const minutes = Math.floor((secondsToday % 3600) / 60);
+        const seconds = secondsToday % 60;
+
+        const timeText =
+          String(hours).padStart(2, "0") + ":" +
+          String(minutes).padStart(2, "0") + ":" +
+           String(seconds).padStart(2, "0");
+
+        document.getElementById("counterDays").textContent = daysText;
+        document.getElementById("counterDetail").textContent = ymdText + " • " + timeText;
+        }
+
 
     // ===== 2) СКРОЛ ДО СЕКЦІЇ =====
     function scrollToSection(id) {
